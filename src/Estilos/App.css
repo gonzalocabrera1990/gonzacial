@@ -1,0 +1,43 @@
+
+body {
+    background-image: url(../Fotos/mapa-mundi.jpg);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    }
+
+.back {
+    background: rgb(175, 252, 175);
+    background-position: bottom;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.button-style {
+    background: aqua;
+    color: black;
+}
+
+
+.button-fijo {
+        position: fixed;
+        display: none;
+        align-Items: 'center';
+        justify-Content: 'center';
+        bottom: 0;
+        right: 0;
+        left: 0;
+        height: 70px;
+    }
+
+.altura {
+    margin-top: 15%;
+}
+
+.nav {
+    background-color: rgb(8, 95, 8);
+}
