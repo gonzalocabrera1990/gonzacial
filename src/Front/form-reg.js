@@ -1,4 +1,5 @@
 import React from 'react';
+import {register} from './users';
 import Navbarba from './navbar';
 import {Form, FormGroup, Col, Input, Label, Button, FormFeedback } from 'reactstrap';
 import '../Estilos/estilo.css';
@@ -8,21 +9,22 @@ class Forms extends React.Component {
     super(props);
 
     this.state = {
-      contraseña: '',
-      contraseñaRepeat: '',
-      email: '',
-      pais: '',
-      fecha: '',
-      sexo: '',
+      username: '',
+      password: '',
+      repeatpassword: '',
+      sex: '',
+      date: '',
+      country: '',
       touched: {
-        contraseña: false,
-        email: false
+        password: false,
+        username: false
         
       }
     }
     
     this.controlState = this.controlState.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
     
   }
 
@@ -33,7 +35,9 @@ class Forms extends React.Component {
 
     this.setState({
       [name]: value
+     
     });
+    console.log(this.state.sex);
 } 
 
   handleBlur = (field) => (e) =>{
@@ -42,34 +46,62 @@ class Forms extends React.Component {
     });
   }
 
-  validar (contraseña, contraseñaRepeat, email){
+  validar (password, repeatpassword, username){
     const error = {
-      contraseña: '',
-      contraseñaRepeat: '',
-      email: ''
+      password: '',
+      repeatpassword: '',
+      username: ''
 
     }
     
-        if(this.state.touched.contraseña && contraseña.length < 4)
-        error.contraseña = 'La contraseña es DEBIL. Debe ser mayor a 4 caracteres. Recomendamos alternar numeros y letras';
-      else if(this.state.touched.contraseña && contraseña.length > 10)
-        error.contraseña = 'El contraseña debe ser menor o igual a 10 caracteres. Recomendamos alternar numeros y letras';
+        if(this.state.touched.password && password.length < 4)
+        error.password = 'La contraseña es DEBIL. Debe ser mayor a 4 caracteres. Recomendamos alternar numeros y letras';
+      else if(this.state.touched.password && password.length > 10)
+        error.password = 'El contraseña debe ser menor o igual a 10 caracteres. Recomendamos alternar numeros y letras';
       
-        if(this.state.touched.contraseñaRepeat && contraseñaRepeat.length < 4)
-        error.contraseñaRepeat = 'La contraseña es DEBIL. Debe ser mayor a 4 caracteres. Recomendamos alternar numeros y letras';
-      else if(this.state.touched.contraseñaRepeat && contraseñaRepeat.length > 10)
-        error.contraseñaRepeat = 'El contraseña debe ser menor o igual a 10 caracteres. Recomendamos alternar numeros y letras';
+        if(this.state.touched.repeatpassword && repeatpassword.length < 4)
+        error.repeatpassword = 'La contraseña es DEBIL. Debe ser mayor a 4 caracteres. Recomendamos alternar numeros y letras';
+      else if(this.state.touched.repeatpassword && repeatpassword.length > 10)
+        error.repeatpassword = 'El contraseña debe ser menor o igual a 10 caracteres. Recomendamos alternar numeros y letras';
       
 
-    if(this.state.touched.email && email.split('').filter(x => x === '@').length !==1)
-      error.email= 'El email debe contener un @';
+    if(this.state.touched.username && username.split('').filter(x => x === '@').length !==1)
+      error.username= 'El email debe contener un @';
       
     
     return error;
   }
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    // get form data out of state
+    const User = {
+      username: this.state.username,
+      password: this.state.password,
+      sex: this.state.sex,
+      date: this.state.date,
+      country: this.state.country      
+    }
+    register(User).then(res =>{
+      this.props.history.push('/');
+    })
+    /*fetch('/users/signup', {
+      
+  method: 'post',
+  headers: {
+    'Content-type': 'application/x-www-form-urlencoded'
+  },
+  body: JSON.stringify(data)
+})
+.then((response) => response.json())
+.then((result) => {
+  console.log(result)
+})*/
+}
   
   render(){
-    const error = this.validar(this.state.contraseña, this.state.contraseñaRepeat, this.state.email);
+    const error = this.validar(this.state.password, this.state.repeatpassword, this.state.username, this.state.sex);
+    
     return (
 
     <div className="" >
@@ -85,74 +117,75 @@ class Forms extends React.Component {
         </div>
 
         <div className="container">
-          <Form >
+          <Form  onSubmit={this.onSubmit}>
             
             <FormGroup row>
-              <Label htmlFor="email" md={2} >Email</Label>
+              <Label htmlFor="username" md={2} >Email</Label>
                 <Col md={10}>
-                  <Input type="email" id="email" name="email" placeholder="example@mail.com" 
-                    value={this.state.email}
-                    valid={error.email === ''}
-                    invalid={error.email !== ''}
+                  <Input type="email" id="username" name="username" placeholder="example@mail.com" 
+                    value={this.state.username}
+                    valid={error.username === ''}
+                    invalid={error.username !== ''}
                     onChange = {this.controlState}
-                    onBlur = {this.handleBlur('email')} />
-                    <FormFeedback>{error.email}</FormFeedback>
+                    onBlur = {this.handleBlur('username')} />
+                    <FormFeedback>{error.username}</FormFeedback>
                 </Col>
             </FormGroup>
             <FormGroup row>
-              <Label htmlFor="contraseña" md={2} >Contraseña</Label>
+              <Label htmlFor="password" md={2} >Contraseña</Label>
                 <Col md={10}>
-                  <Input type="password" id="contraseña" name="contraseña" placeholder="contraseña" 
-                    value={this.state.contraseña} 
-                    valid={error.contraseña === ''}
-                    invalid={error.contraseña !== ''}
+                  <Input type="password" id="password" name="password" placeholder="password" 
+                    value={this.state.password} 
+                    valid={error.password === ''}
+                    invalid={error.password !== ''}
                     onChange = {this.controlState}
-                    onBlur = {this.handleBlur('contraseña')}/>
-                    <FormFeedback>{error.contraseña}</FormFeedback>
+                    onBlur = {this.handleBlur('password')}/>
+                    <FormFeedback>{error.password}</FormFeedback>
                 </Col>
             </FormGroup>  
             <FormGroup row>
-              <Label htmlFor="contraseñaRepeat" md={2} >Repetir Contraseña</Label>
+              <Label htmlFor="repeatpassword" md={2} >Repetir Contraseña</Label>
                 <Col md={10}>
-                  <Input type="password" id="contraseñaRepeat" name="contraseñaRepeat" placeholder="repetir contraseña" 
-                    value={this.state.contraseñaRepeat} 
-                    valid={error.contraseñaRepeat === ''}
-                    invalid={error.contraseñaRepeat !== ''}
+                  <Input type="password" id="repeatpassword" name="repeatpassword" placeholder="repetir contraseña" 
+                    value={this.state.repeatpassword} 
+                    valid={error.repeatpassword === ''}
+                    invalid={error.repeatpassword !== ''}
                     onChange = {this.controlState}
-                    onBlur = {this.handleBlur('contraseñaRepeat')}/>
-                    <FormFeedback>{error.contraseñaRepeat}</FormFeedback>
+                    onBlur = {this.handleBlur('repeatpassword')}/>
+                    <FormFeedback>{error.repeatpassword}</FormFeedback>
                 </Col>
             </FormGroup>
             <FormGroup row>
-              <Label htmlFor="sexo" md={2} >Sexo</Label>
+              <Label htmlFor="sex" md={2} >Sex</Label>
                 <Col md={10}>
-                  <Input type="select" id="sexo" name="sexo" 
-                    value={this.state.sexo} 
-                    onChange = {this.controlState}>
-                    <option>Femenino</option>
-                    <option>Masculino</option>
+                  <Input type="select" id="sex" name="sex" 
+                    value={this.state.sex} 
+                    onChange = {this.controlState} >
+                    <option selected >Female</option>
+                    <option>Male</option>
+                    <option>Trans</option>
                     </Input>
                 </Col>
             </FormGroup>
             <FormGroup row>
-              <Label htmlFor="fecha" md={2} >Fecha de Naciminento</Label>
+              <Label htmlFor="date" md={2} >Fecha de Naciminento</Label>
                 <Col md={10}>
-                  <Input type="date" id="fecha" name="fecha" placeholder="Birth" 
-                    value={this.state.fecha} 
+                  <Input type="date" id="date" name="date" placeholder="Birth" 
+                    value={this.state.date} 
                     onChange = {this.controlState}/>
                 </Col>
             </FormGroup>
             <FormGroup row>
-              <Label htmlFor="pais" md={2} >País</Label>
+              <Label htmlFor="country" md={2} >Country</Label>
                 <Col md={10}>
-                  <Input type="text" id="pais" name="pais" placeholder="País" 
-                    value={this.state.pais} 
+                  <Input type="text" id="country" name="country" placeholder="country" 
+                    value={this.state.country} 
                     onChange = {this.controlState}/>
                 </Col>
             </FormGroup>
             <FormGroup row className="mt-5 mb-5">
             <Col>
-              <Button type="submit" >Enviar</Button>
+              <Button type="submit">Enviar</Button>
             </Col>
             </FormGroup>
           </Form>

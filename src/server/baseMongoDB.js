@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-
-const URI = 'mongodb://localhost/red-social';
+const config = require('../../config');
+const URI = config.mongoUrl;
 
 mongoose.connect(URI)
     .then(db => console.log('La base de datos esta conectada'))

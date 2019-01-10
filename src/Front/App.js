@@ -6,10 +6,9 @@ import Inicio from "./pag-Inicio";
 import Forms from "./form-reg";
 import Mapeo from "./hola";
 import DataLogin from "./datalogin";
+import Acceso from "./accesoaperfil";
+import AccesoUno from "./accesoperfil2";
 import '../Estilos/App.css';
-
-
-
 
 class App extends Component {
   render() {
@@ -20,13 +19,19 @@ class App extends Component {
             <Route path="/" component ={Inicio} exact />
             </div>
             <div className="back">
-            <Route path="/formulario" component ={Forms} />
+            <Route path="/users/signup" component ={Forms} />
             </div>
             <div className="back">
             <Route path="/start" component ={Mapeo} />
             </div>
             <div className="back">
-            <Route path="/data-login" component ={DataLogin} />
+            <Route path="/users/data-login" component ={DataLogin} />
+            </div>
+            <div className="back">
+            <Route path="/users/acceso" component ={Acceso} />
+            </div>
+            <div className="back">
+            <Route path="/users/accesoperfil" component ={AccesoUno} />
             </div>
           </div>
         </Switch>
